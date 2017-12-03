@@ -1,5 +1,5 @@
 # wordgen
-A script written in Python 2.7 for generating random words based on a pre-defined phonology. 
+A script written in Python 2.7 for generating random words based on a predefined phonology. 
 
 This sample script has the following features:
 
