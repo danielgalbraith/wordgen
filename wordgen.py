@@ -1,17 +1,42 @@
 import numpy as np
 import random
+import re
+import os
 
 # NB - 'q' represents glottal stop.
-
-def random(chars, weights):
-    	normw = [w/sum(weights) for w in weights]
-    	choice = np.random.choice(chars, 1, p=normw)
-    	return choice
 
 # The number of syllables per word you want to generate: #
 sylnum = 2
 # The number of words you want to generate: #
 outputlines = 3000
+# Patterns for post-processing (assimilation rules):
+pats = {
+			r'a\.a': 'a.qa',
+			r'e\.e': 'e.qe',
+			r'i\.i': 'i.qi',
+			r'o\.o': 'o.qo',
+			r'u\.u': 'u.qu',
+
+			r'm\.n': 'n.n',
+			r'm\.ny': 'n.ny',
+			r'm\.t': 'n.t',
+			r'm\.d': 'n.d',
+			r'm\.c': 'n.c',
+			r'n\.m': 'm.m',
+			r'n\.p': 'm.p',
+			r'n\.k': 'ng.k',
+			r'n\.b': 'm.b',
+			r'n\.g': 'ng.g',
+			r'n\.y': '.ny',
+			r'l\.r': 'r.r',
+			r'r\.l': 'l.l'
+		}
+
+
+def random(chars, weights):
+    	normw = [w/sum(weights) for w in weights]
+    	choice = np.random.choice(chars, 1, p=normw)
+    	return choice
 
 # Writes a wordlist output file: #
 with open("output.txt", "w") as f:
@@ -247,3 +272,20 @@ with open("output.txt", "w") as f:
 			oldsyl = syl
 			f.write(syl)
 		f.write('\n')
+
+
+# Post-process output: #
+with open("output.txt", "r") as f1:
+	seen = set()
+	with open("wordlist-%dsyl.txt" % sylnum, "w") as f2:
+		for line in f1:
+			if line not in seen:
+				seen.add(line)
+				for k, v in pats.items():
+					sub = re.sub(k, v, line)
+					line = sub
+				f2.write(line)
+
+# Trash intermediate output:
+if os.path.exists("output.txt"):
+	os.remove("output.txt")

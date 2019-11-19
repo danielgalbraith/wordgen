@@ -1,5 +1,5 @@
 # wordgen
-A script written in Python 2.7 for generating random words based on a predefined phonology. 
+A script written in Python 3.7 for generating random words based on a predefined phonology. 
 
 This sample script has the following features:
 
@@ -9,5 +9,6 @@ This sample script has the following features:
 4. Can specify syllable count and number of output words
 5. Built-in dispreference for repeated syllables with same point of articulation (reduced weight if previous syllable has same POA)
 6. Output file format: .txt with newline for each word; syllables separated by dot
+7. Post-processing according to assimilation rules included in wordgen.py
 
 These default settings can be changed by altering the phoneme inventory and weights, or by changing the number of lines/syllables in the output.
