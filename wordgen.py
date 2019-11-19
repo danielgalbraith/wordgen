@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import re
+import os
 
 # NB - 'q' represents glottal stop.
 
@@ -273,11 +274,18 @@ with open("output.txt", "w") as f:
 		f.write('\n')
 
 
-# Post-processes output: #
+# Post-process output: #
 with open("output.txt", "r") as f1:
+	seen = set()
 	with open("wordlist-%dsyl.txt" % sylnum, "w") as f2:
 		for line in f1:
-			for k, v in pats.items():
-				sub = re.sub(k, v, line)
-				line = sub
-			f2.write(line)
+			if line not in seen:
+				seen.add(line)
+				for k, v in pats.items():
+					sub = re.sub(k, v, line)
+					line = sub
+				f2.write(line)
+
+# Trash intermediate output:
+if os.path.exists("output.txt"):
+	os.remove("output.txt")
