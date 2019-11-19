@@ -1,6 +1,8 @@
 import numpy as np
 import random
 
+# NB - 'q' represents glottal stop.
+
 def random(chars, weights):
     	normw = [w/sum(weights) for w in weights]
     	choice = np.random.choice(chars, 1, p=normw)
@@ -27,45 +29,45 @@ with open("output.txt", "w") as f:
 			# Generate onset: #
 			# First syllable: #
 			if oldsyl == '':
-				onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
-				onsc1weights = [17.69, 9.09, 5.25, 0.87, 4.67, 7.44, 10.00, 0.82, 5.69, 4.35, 3.50, 1.90, 4.48, 1.03, 1.14, 2.77, 4.43, 2.07, 2.78, 2.49, 3.68]
+				onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+				onsc1weights = [17.69, 9.09, 5.25, 0.87, 4.67, 7.44, 10.00, 5.69, 4.35, 3.50, 1.90, 4.48, 1.03, 1.14, 2.77, 4.43, 2.07, 2.78, 2.49, 3.68]
 				onsc1 = random(onsc1, onsc1weights)
 			# After first syllable: #
-			if oldsyl != '':
+			else:
 				if oldsyl[0] == 'p' or oldsyl[0] == 'b' or oldsyl[0] == 'f':
-					onsc1= ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1= ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [10.29, 6.55, 8.62, 1.05, 0.3, 9.25, 7.36, 1.64, 0.48, 2.89, 3.72, 0.17, 4.20, 0.64, 0.97, 1.33, 9.27, 9.65, 2.25, 2.18, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
 				elif oldsyl[0] == 't' or oldsyl[0] == 'd' or oldsyl[0] == 's':
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [9.47, 6.55, 8.62, 1.05, 3.05, 0.93, 7.36, 1.64, 4.81, 0.29, 3.72, 1.67, 0.42, 0.64, 0.97, 1.33, 9.27, 9.65, 2.25, 2.18, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
 				elif oldsyl[0] == 'k' or oldsyl[0] == 'g':
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [10.11, 6.55, 8.62, 1.05, 3.05, 9.25, 0.74, 1.64, 4.81, 2.89, 0.37, 1.67, 4.20, 0.64, 0.97, 1.33, 9.27, 9.65, 2.25, 2.18, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
 				elif oldsyl[0] == 'm' or oldsyl[0] == 'n':
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [9.49, 0.66, 0.86, 0.11, 3.05, 9.25, 7.36, 1.64, 4.81, 2.89, 3.72, 1.67, 4.20, 0.64, 0.97, 1.33, 9.27, 9.65, 2.25, 2.18, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
 				elif oldsyl[0] == 'l' or oldsyl[0] == 'r':
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [9.16, 6.55, 8.62, 1.05, 3.05, 9.25, 7.36, 1.64, 4.81, 2.89, 3.72, 1.67, 4.20, 0.64, 0.97, 1.33, 0.93, 0.97, 2.25, 2.18, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
 				elif oldsyl[0] == 'z' or oldsyl[0] == 'x' or oldsyl[0] == 'c':
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [11.09, 6.55, 8.62, 1.05, 3.05, 9.25, 7.36, 1.64, 4.81, 2.89, 3.72, 1.67, 4.20, 0.06, 0.09, 0.13, 9.27, 9.65, 2.25, 2.18, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
-				elif oldsyl[0] == 'h' or oldsyl[0] == '`':
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+				elif oldsyl[0] == 'h' or oldsyl[0] == 'q':
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [10.78, 6.55, 8.62, 1.05, 3.05, 9.25, 7.36, 0.16, 4.81, 2.89, 3.72, 1.67, 4.20, 0.64, 0.97, 1.33, 9.27, 9.65, 2.25, 2.18, 0.39]
 					onsc1 = random(onsc1, onsc1weights)
 				elif oldsyl[0] == 'w' or oldsyl[0] == 'y':
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [10.92, 6.55, 8.62, 1.05, 3.05, 9.25, 7.36, 1.64, 4.81, 2.89, 3.72, 1.67, 4.20, 0.64, 0.97, 1.33, 9.27, 9.65, 0.22, 0.22, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
 				else:
-					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+					onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'q', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
 					onsc1weights = [11.45, 6.55, 8.62, 1.05, 3.05, 9.25, 7.36, 1.64, 4.81, 2.89, 3.72, 1.67, 4.20, 0.64, 0.97, 1.33, 9.27, 9.65, 2.25, 2.18, 3.93]
 					onsc1 = random(onsc1, onsc1weights)
 			# Generate coda: #
