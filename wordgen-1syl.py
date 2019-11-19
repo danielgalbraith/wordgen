@@ -4,7 +4,7 @@ import os
 
 # Script for generating single-syllable words.
 # The number of words you want to generate: #
-outputlines = 1000
+outputlines = 10000
 
 # Writes a wordlist output file: #
 with open("output1syl.txt", "w") as f:
