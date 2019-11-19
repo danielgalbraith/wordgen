@@ -19,8 +19,8 @@ with open("output1syl.txt", "w") as f:
 			normalized_vw = [vw/sum(vowelweights) for vw in vowelweights]
 			nuc = np.random.choice(vowels, 1, p=normalized_vw)
 			# Generate onset: #
-			onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', '`', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
-			onsc1weights = [17.69, 9.09, 5.25, 0.87, 4.67, 7.44, 10.00, 0.82, 5.69, 4.35, 3.50, 1.90, 4.48, 1.03, 1.14, 2.77, 4.43, 2.07, 2.78, 2.49, 3.68]
+			onsc1 = ['', 'm', 'n', 'ny', 'p', 't', 'k', 'b', 'd', 'g', 'f', 's', 'z', 'x', 'c', 'l', 'r', 'y', 'w', 'h']
+			onsc1weights = [17.69, 9.09, 5.25, 0.87, 4.67, 7.44, 10.00, 5.69, 4.35, 3.50, 1.90, 4.48, 1.03, 1.14, 2.77, 4.43, 2.07, 2.78, 2.49, 3.68]
 			normalized_onscw = [onscw/sum(onsc1weights) for onscw in onsc1weights]
 			onsc1 = np.random.choice(onsc1, 1, p=normalized_onscw)
 			# Generate coda: #
