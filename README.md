@@ -12,3 +12,5 @@ This sample script has the following features:
 7. Post-processing according to assimilation rules included in wordgen.py
 
 These default settings can be changed by altering the phoneme inventory and weights, or by changing the number of lines/syllables in the output.
+
+The additional script remove_from_lex.py can be used to remove a specific set of words from the generated wordlist.
