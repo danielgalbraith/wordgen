@@ -16,6 +16,13 @@ pats = {
 			r'o\.o': 'o.qo',
 			r'u\.u': 'u.qu',
 
+			r'iy\.': 'i.',
+			r'iw\.': 'i.',
+			r'oy\.': 'o.',
+			r'ow\.': 'o.',
+			r'uy\.': 'u.',
+			r'uw\.': 'u.',
+
 			r'm\.n': 'n.n',
 			r'm\.ny': 'n.ny',
 			r'm\.t': 'n.t',
@@ -104,56 +111,38 @@ def write_file():
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [201.68, 0.66, 2.12, 0.74, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'p':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [317.44, 6.63, 21.18, 7.38, 0.3, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 't':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [297.64, 6.63, 21.18, 7.38, 3.03, 0.85, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'k':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [298.08, 6.63, 21.18, 7.38, 3.03, 8.53, 0.84, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 's':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [314.96, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 0.37, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [277.24, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 0.7, 0.72, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'y' or oldsyl[2] == 'w':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [295.96, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 0.65, 0.26]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						else:
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [328.36, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 					else:
 						coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 						codaweights = [328.36, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 						coda = random(coda, codaweights)
-						if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-							coda[0] = ''
 				# Penultimate syllable: #
 				if j == sylnum-2:
 					if len(oldsyl) > 2:
@@ -161,56 +150,38 @@ def write_file():
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [117.65, 0.66, 2.12, 0.74, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'p':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [185.17, 6.63, 21.18, 7.38, 0.3, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 't':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [173.62, 6.63, 21.18, 7.38, 3.03, 0.85, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'k':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [173.88, 6.63, 21.18, 7.38, 3.03, 8.53, 0.84, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 's':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [183.73, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 0.37, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [161.72, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 0.7, 0.72, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'y' or oldsyl[2] == 'w':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [172.64, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 0.65, 0.26]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						else:
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [191.54, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 					else:
 						coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 						codaweights = [191.54, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 						coda = random(coda, codaweights)
-						if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-							coda[0] = ''
 				# Final syllable: #
 				if j == sylnum-1:
 					if len(oldsyl) > 2:
@@ -218,56 +189,38 @@ def write_file():
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [89.25, 0.66, 2.12, 0.74, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'p':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [140.45, 6.63, 21.18, 7.38, 0.3, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 't':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [131.71, 6.63, 21.18, 7.38, 3.03, 0.85, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'k':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [131.9, 6.63, 21.18, 7.38, 3.03, 8.53, 0.84, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 's':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [139.38, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 0.37, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [122.68, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 0.7, 0.72, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						elif oldsyl[2] == 'y' or oldsyl[2] == 'w':
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [130.97, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 0.65, 0.26]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 						else:
 							coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 							codaweights = [145.3, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 							coda = random(coda, codaweights)
-							if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-								coda[0] = ''
 					else:
 						coda = ['', 'm', 'n', 'ng', 'p', 't', 'k', 's', 'l', 'r', 'y', 'w']
 						codaweights = [145.3, 6.63, 21.18, 7.38, 3.03, 8.53, 8.41, 3.72, 7.03, 7.17, 6.46, 2.55]
 						coda = random(coda, codaweights)
-						if nuc[0] not in ('a', 'e') and coda[0] in ('y', 'w'):
-							coda[0] = ''
 				# Write to output file: ##
 				syl += onsc1[0] + nuc[0] + coda[0] + '.'
 				oldsyl = syl
