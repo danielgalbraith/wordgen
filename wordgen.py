@@ -4,7 +4,6 @@ import re
 import os
 
 # NB - 'q' represents glottal stop.
-
 # The number of syllables per word you want to generate: #
 sylnum = 2
 # The number of words you want to generate: #
@@ -30,13 +29,13 @@ pats = {
 			r'n\.y': '.ny',
 			r'l\.r': 'r.r',
 			r'r\.l': 'l.l'
-		}
+}
 
 
 def random(chars, weights):
-    	normw = [w/sum(weights) for w in weights]
-    	choice = np.random.choice(chars, 1, p=normw)
-    	return choice
+	normw = [w/sum(weights) for w in weights]
+	choice = np.random.choice(chars, 1, p=normw)
+	return choice
 
 
 def write_file():
@@ -298,4 +297,4 @@ def main():
 	post_process()
 
 if __name__ == '__main__':
-    main()
+	main()
