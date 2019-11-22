@@ -1,4 +1,4 @@
-# wordgen
+# WordGen
 A script written in Python 3.7 for generating random words based on a predefined phonology. 
 
 ## Features
