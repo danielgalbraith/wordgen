@@ -1,7 +1,7 @@
 import os
 import string
 
-sylnum = 1
+sylnum = 2
 lex_filepath = 'lexicon.txt'
 
 wordset = set()
