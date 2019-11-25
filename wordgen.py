@@ -226,7 +226,7 @@ def post_process():
 
 
 def main():
-	datafile = 'data.csv'
+	datafile = 'example.csv'
 	vowel_df, cons_df = read_from_csv(datafile)
 	write_file(vowel_df, cons_df)
 	post_process()
