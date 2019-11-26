@@ -3,12 +3,9 @@ import pandas as pd
 import random
 import re
 import os
+import argparse
 
 # NB - 'q' represents glottal stop.
-# The number of syllables per word you want to generate: #
-sylnum = 2
-# The number of words you want to generate: #
-outputlines = 3000
 # Patterns for post-processing (assimilation rules):
 pats = {
 			r'a\.a': 'a.qa',
@@ -71,7 +68,7 @@ def random(chars, weights):
 	return choice
 
 
-def write_file(vowel_df, cons_df):
+def write_file(vowel_df, cons_df, sylnum, outputlines):
 	# Writes a wordlist output file: #
 	with open("output.txt", "w") as f:
 		# Do this as many times as the number of words you want in the output: #
@@ -208,7 +205,7 @@ def write_file(vowel_df, cons_df):
 			f.write('\n')
 
 
-def post_process():
+def post_process(sylnum):
 	# Post-process output: #
 	with open("output.txt", "r") as f1:
 		seen = set()
@@ -226,10 +223,21 @@ def post_process():
 
 
 def main():
-	datafile = 'example.csv'
-	vowel_df, cons_df = read_from_csv(datafile)
-	write_file(vowel_df, cons_df)
-	post_process()
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-csv", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="example.csv")
+	parser.add_argument("-m", "--mode", help="Choose between deterministic rules or character-level LM (LSTM) modes.", default="rules")
+	parser.add_argument("-s", "--sylnum", help="Number of syllables in generated words.", default=2)
+	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
+	args = parser.parse_args()
+	
+	datafile = args.csvfile
+	mode = args.mode
+	sylnum = args.sylnum
+	outputlines = args.outputlines
+	if mode == "rules":
+		vowel_df, cons_df = read_from_csv(datafile)
+		write_file(vowel_df, cons_df, sylnum, outputlines)
+		post_process(sylnum)
 
 if __name__ == '__main__':
 	main()
