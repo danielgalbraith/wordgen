@@ -4,37 +4,7 @@ import random
 import re
 import os
 import argparse
-
-# NB - 'q' represents glottal stop.
-# Patterns for post-processing (assimilation rules):
-pats = {
-			r'a\.a': 'a.qa',
-			r'e\.e': 'e.qe',
-			r'i\.i': 'i.qi',
-			r'o\.o': 'o.qo',
-			r'u\.u': 'u.qu',
-
-			r'iy\.': 'i.',
-			r'iw\.': 'i.',
-			r'oy\.': 'o.',
-			r'ow\.': 'o.',
-			r'uy\.': 'u.',
-			r'uw\.': 'u.',
-
-			r'm\.n': 'n.n',
-			r'm\.ny': 'n.ny',
-			r'm\.t': 'n.t',
-			r'm\.d': 'n.d',
-			r'm\.c': 'n.c',
-			r'n\.m': 'm.m',
-			r'n\.p': 'm.p',
-			r'n\.k': 'ng.k',
-			r'n\.b': 'm.b',
-			r'n\.g': 'ng.g',
-			r'n\.y': '.ny',
-			r'l\.r': 'r.r',
-			r'r\.l': 'l.l'
-}
+import json
 
 
 def read_from_csv(datafile):
@@ -218,7 +188,10 @@ def write_file(vowel_df, cons_df, sylnum, outputlines):
 			f.write('\n')
 
 
-def post_process(sylnum):
+def post_process(sylnum, patterns):
+	# Load patterns from file:
+	with open(patterns, "r") as patf:
+		pats = json.load(patf)
 	# Post-process output: #
 	with open("output.txt", "r") as f1:
 		seen = set()
@@ -227,7 +200,7 @@ def post_process(sylnum):
 				if line not in seen:
 					seen.add(line)
 					for k, v in pats.items():
-						sub = re.sub(k, v, line)
+						sub = re.sub(re.compile(k), v, line)
 						line = sub
 					f2.write(line)
 	# Trash intermediate output:
@@ -241,16 +214,18 @@ def main():
 	parser.add_argument("-m", "--mode", help="Choose between deterministic rules or character-level LM (LSTM) modes.", default="rules")
 	parser.add_argument("-s", "--sylnum", help="Number of syllables in generated words.", default=2)
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
+	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="patterns.json")
 	args = parser.parse_args()
 	
 	datafile = args.csvfile
 	mode = args.mode
-	sylnum = args.sylnum
-	outputlines = args.outputlines
+	sylnum = int(args.sylnum)
+	outputlines = int(args.outputlines)
+	patterns = args.patterns
 	if mode == "rules":
 		vowel_df, cons_df = read_from_csv(datafile)
 		write_file(vowel_df, cons_df, sylnum, outputlines)
-		post_process(sylnum)
+		post_process(sylnum, patterns)
 
 if __name__ == '__main__':
 	main()
