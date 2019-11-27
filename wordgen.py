@@ -68,6 +68,136 @@ def random(chars, weights):
 	return choice
 
 
+def get_weights(df, rule):
+	return [float(i) for i in df[rule].tolist()]
+
+
+def generate_nucleus(vowel_df):
+	return random(list(vowel_df.index), [float(i) for i in vowel_df.iloc[:,0].tolist()])
+
+
+def generate_onset(oldsyl, cons_df):
+	onsc1 = ['' if c == '_' else c for c in list(cons_df.index)]
+	# First syllable: #
+	if oldsyl == '':
+		onsc1weights = get_weights(cons_df, "onsc1,first syl")
+		return random(onsc1, onsc1weights)
+	# After first syllable: #
+	else:
+		if oldsyl[0] == 'p' or oldsyl[0] == 'b' or oldsyl[0] == 'f':
+			onsc1weights = get_weights(cons_df, "onsc1,prec labial ons")
+			return random(onsc1, onsc1weights)
+		elif oldsyl[0] == 't' or oldsyl[0] == 'd' or oldsyl[0] == 's':
+			onsc1weights = get_weights(cons_df, "onsc1,prec alveolar ons")
+			return random(onsc1, onsc1weights)
+		elif oldsyl[0] == 'k' or oldsyl[0] == 'g':
+			onsc1weights = get_weights(cons_df, "onsc1,prec velar ons")
+			return random(onsc1, onsc1weights)
+		elif oldsyl[0] == 'm' or oldsyl[0] == 'n':
+			onsc1weights = get_weights(cons_df, "onsc1,prec nasal ons")
+			return random(onsc1, onsc1weights)
+		elif oldsyl[0] == 'l' or oldsyl[0] == 'r':
+			onsc1weights = get_weights(cons_df, "onsc1,prec liquid ons")
+			return random(onsc1, onsc1weights)
+		elif oldsyl[0] == 'z' or oldsyl[0] == 'x' or oldsyl[0] == 'c':
+			onsc1weights = get_weights(cons_df, "onsc1,prec sibilant ons")
+			return random(onsc1, onsc1weights)
+		elif oldsyl[0] == 'h' or oldsyl[0] == 'q':
+			onsc1weights = get_weights(cons_df, "onsc1,prec glottal ons")
+			return random(onsc1, onsc1weights)
+		elif oldsyl[0] == 'w' or oldsyl[0] == 'y':
+			onsc1weights = get_weights(cons_df, "onsc1,prec semivowel ons")
+			return random(onsc1, onsc1weights)
+		else:
+			onsc1weights = get_weights(cons_df, "onsc1,prec no ons")
+			return random(onsc1, onsc1weights)
+
+
+def generate_coda(oldsyl, cons_df, syl_idx, sylnum):
+	coda = ['' if c == '_' else c for c in list(cons_df.index)]
+	# Before penultimate syllable: #
+	if syl_idx < sylnum-2:
+		if len(oldsyl) > 2:
+			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
+				codaweights = get_weights(cons_df, "coda,before penult prec nasal coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'p':
+				codaweights = get_weights(cons_df, "coda,before penult prec p coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 't':
+				codaweights = get_weights(cons_df, "coda,before penult prec t coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'k':
+				codaweights = get_weights(cons_df, "coda,before penult prec k coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 's':
+				codaweights = get_weights(cons_df, "coda,before penult prec s coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
+				codaweights = get_weights(cons_df, "coda,before penult prec liquid coda")
+				return random(coda, codaweights)
+			else:
+				codaweights = get_weights(cons_df, "coda,before penult prec semivowel coda")
+				return random(coda, codaweights)
+		else:
+			codaweights = get_weights(cons_df, "coda,before penult prec no coda")
+			return random(coda, codaweights)
+	# Penultimate syllable: #
+	if syl_idx == sylnum-2:
+		if len(oldsyl) > 2:
+			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
+				codaweights = get_weights(cons_df, "coda,penult prec nasal coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'p':
+				codaweights = get_weights(cons_df, "coda,penult prec p coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 't':
+				codaweights = get_weights(cons_df, "coda,penult prec t coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'k':
+				codaweights = get_weights(cons_df, "coda,penult prec k coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 's':
+				codaweights = get_weights(cons_df, "coda,penult prec s coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
+				codaweights = get_weights(cons_df, "coda,penult prec liquid coda")
+				return random(coda, codaweights)
+			else:
+				codaweights = get_weights(cons_df, "coda,penult prec semivowel coda")
+				return random(coda, codaweights)
+		else:
+			codaweights = get_weights(cons_df, "coda,penult prec no coda")
+			return random(coda, codaweights)
+	# Final syllable: #
+	if syl_idx == sylnum-1:
+		if len(oldsyl) > 2:
+			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
+				codaweights = get_weights(cons_df, "coda,last syl prec nasal coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'p':
+				codaweights = get_weights(cons_df, "coda,last syl prec p coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 't':
+				codaweights = get_weights(cons_df, "coda,last syl prec t coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'k':
+				codaweights = get_weights(cons_df, "coda,last syl prec k coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 's':
+				codaweights = get_weights(cons_df, "coda,last syl prec s coda")
+				return random(coda, codaweights)
+			elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
+				codaweights = get_weights(cons_df, "coda,last syl prec liquid coda")
+				return random(coda, codaweights)
+			else:
+				codaweights = get_weights(cons_df, "coda,last syl prec semivowel coda")
+				return random(coda, codaweights)
+		else:
+			codaweights = get_weights(cons_df, "coda,last syl prec no coda")
+			return random(coda, codaweights)
+
+
 def write_file(vowel_df, cons_df, sylnum, outputlines):
 	# Writes a wordlist output file: #
 	with open("output.txt", "w") as f:
@@ -78,126 +208,9 @@ def write_file(vowel_df, cons_df, sylnum, outputlines):
 				if j == 0:
 					oldsyl = ''
 				syl = ''
-				# Generate nucleus: #
-				nuc = random(list(vowel_df.index), [float(i) for i in vowel_df.iloc[:,0].tolist()])
-				# Generate onset: #
-				onsc1 = ['' if c == '_' else c for c in list(cons_df.index)]
-				# First syllable: #
-				if oldsyl == '':
-					onsc1weights = [float(i) for i in cons_df["onsc1,first syl"].tolist()]
-					onsc1 = random(onsc1, onsc1weights)
-				# After first syllable: #
-				else:
-					if oldsyl[0] == 'p' or oldsyl[0] == 'b' or oldsyl[0] == 'f':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec labial ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					elif oldsyl[0] == 't' or oldsyl[0] == 'd' or oldsyl[0] == 's':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec alveolar ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					elif oldsyl[0] == 'k' or oldsyl[0] == 'g':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec velar ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					elif oldsyl[0] == 'm' or oldsyl[0] == 'n':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec nasal ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					elif oldsyl[0] == 'l' or oldsyl[0] == 'r':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec liquid ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					elif oldsyl[0] == 'z' or oldsyl[0] == 'x' or oldsyl[0] == 'c':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec sibilant ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					elif oldsyl[0] == 'h' or oldsyl[0] == 'q':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec glottal ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					elif oldsyl[0] == 'w' or oldsyl[0] == 'y':
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec semivowel ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-					else:
-						onsc1weights = [float(i) for i in cons_df["onsc1,prec no ons"].tolist()]
-						onsc1 = random(onsc1, onsc1weights)
-				# Generate coda: #
-				coda = ['' if c == '_' else c for c in list(cons_df.index)]
-				# Before penultimate syllable: #
-				if j < sylnum-2:
-					if len(oldsyl) > 2:
-						if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
-							codaweights = [float(i) for i in cons_df["coda,before penult prec nasal coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'p':
-							codaweights = [float(i) for i in cons_df["coda,before penult prec p coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 't':
-							codaweights = [float(i) for i in cons_df["coda,before penult prec t coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'k':
-							codaweights = [float(i) for i in cons_df["coda,before penult prec k coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 's':
-							codaweights = [float(i) for i in cons_df["coda,before penult prec s coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
-							codaweights = [float(i) for i in cons_df["coda,before penult prec liquid coda"].tolist()]
-							coda = random(coda, codaweights)
-						else:
-							codaweights = [float(i) for i in cons_df["coda,before penult prec semivowel coda"].tolist()]
-							coda = random(coda, codaweights)
-					else:
-						codaweights = [float(i) for i in cons_df["coda,before penult prec no coda"].tolist()]
-						coda = random(coda, codaweights)
-				# Penultimate syllable: #
-				if j == sylnum-2:
-					if len(oldsyl) > 2:
-						if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
-							codaweights = [float(i) for i in cons_df["coda,penult prec nasal coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'p':
-							codaweights = [float(i) for i in cons_df["coda,penult prec p coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 't':
-							codaweights = [float(i) for i in cons_df["coda,penult prec t coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'k':
-							codaweights = [float(i) for i in cons_df["coda,penult prec k coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 's':
-							codaweights = [float(i) for i in cons_df["coda,penult prec s coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
-							codaweights = [float(i) for i in cons_df["coda,penult prec liquid coda"].tolist()]
-							coda = random(coda, codaweights)
-						else:
-							codaweights = [float(i) for i in cons_df["coda,penult prec semivowel coda"].tolist()]
-							coda = random(coda, codaweights)
-					else:
-						codaweights = [float(i) for i in cons_df["coda,penult prec no coda"].tolist()]
-						coda = random(coda, codaweights)
-				# Final syllable: #
-				if j == sylnum-1:
-					if len(oldsyl) > 2:
-						if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
-							codaweights = [float(i) for i in cons_df["coda,last syl prec nasal coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'p':
-							codaweights = [float(i) for i in cons_df["coda,last syl prec p coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 't':
-							codaweights = [float(i) for i in cons_df["coda,last syl prec t coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'k':
-							codaweights = [float(i) for i in cons_df["coda,last syl prec k coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 's':
-							codaweights = [float(i) for i in cons_df["coda,last syl prec s coda"].tolist()]
-							coda = random(coda, codaweights)
-						elif oldsyl[2] == 'l' or oldsyl[2] == 'r':
-							codaweights = [float(i) for i in cons_df["coda,last syl prec liquid coda"].tolist()]
-							coda = random(coda, codaweights)
-						else:
-							codaweights = [float(i) for i in cons_df["coda,last syl prec semivowel coda"].tolist()]
-							coda = random(coda, codaweights)
-					else:
-						codaweights = [float(i) for i in cons_df["coda,last syl prec no coda"].tolist()]
-						coda = random(coda, codaweights)
+				nuc = generate_nucleus(vowel_df)
+				onsc1 = generate_onset(oldsyl, cons_df)
+				coda = generate_coda(oldsyl, cons_df, j, sylnum)
 				# Write to output file: ##
 				syl += onsc1[0] + nuc[0] + coda[0] + '.'
 				oldsyl = syl
