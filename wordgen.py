@@ -168,24 +168,31 @@ def generate_coda(oldsyl, cons_df, syl_idx, sylnum):
 			return random(coda, codaweights)
 
 
-def write_file(vowel_df, cons_df, sylnum, outputlines):
+def generate_words(vowel_df, cons_df, sylnum, outputlines):
+	wordlist = []
+	for i in range (0, outputlines):
+		word = ''
+		# Do this for each syllable: #
+		for j in range (0, sylnum):
+			if j == 0:
+				oldsyl = ''
+			syl = ''
+			nuc = generate_nucleus(vowel_df)
+			onsc1 = generate_onset(oldsyl, cons_df)
+			coda = generate_coda(oldsyl, cons_df, j, sylnum)
+			# Write to output file: ##
+			syl += onsc1[0] + nuc[0] + coda[0] + '.'
+			oldsyl = syl
+			word += syl
+		wordlist.append(word)
+	return wordlist
+
+
+def write_file(wordlist):
 	# Writes a wordlist output file: #
 	with open("output.txt", "w") as f:
-		# Do this as many times as the number of words you want in the output: #
-		for i in range (0, outputlines):
-			# Do this for each syllable: #
-			for j in range (0, sylnum):
-				if j == 0:
-					oldsyl = ''
-				syl = ''
-				nuc = generate_nucleus(vowel_df)
-				onsc1 = generate_onset(oldsyl, cons_df)
-				coda = generate_coda(oldsyl, cons_df, j, sylnum)
-				# Write to output file: ##
-				syl += onsc1[0] + nuc[0] + coda[0] + '.'
-				oldsyl = syl
-				f.write(syl)
-			f.write('\n')
+		for i in range (0, len(wordlist)):
+			f.write(wordlist[i] + '\n')
 
 
 def post_process(sylnum, patterns):
@@ -208,6 +215,10 @@ def post_process(sylnum, patterns):
 		os.remove("output.txt")
 
 
+def sample(wordlist, outputlines):
+	return np.random.choice(wordlist, outputlines, replace=False)
+
+
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-csv", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="example.csv")
@@ -216,6 +227,8 @@ def main():
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
 	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="patterns.json")
 	args = parser.parse_args()
+
+	sample_n = 10
 	
 	datafile = args.csvfile
 	mode = args.mode
@@ -224,7 +237,14 @@ def main():
 	patterns = args.patterns
 	if mode == "rules":
 		vowel_df, cons_df = read_from_csv(datafile)
-		write_file(vowel_df, cons_df, sylnum, outputlines)
+		full_wordlist = []
+		for i in range(0, sample_n):
+			print('Sample %d' % (i+1))
+			part_wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
+			full_wordlist.append(part_wordlist)
+		full_wordlist = [item for part in full_wordlist for item in part]
+		sampled_wordlist = sample(full_wordlist, outputlines)
+		write_file(sampled_wordlist)
 		post_process(sylnum, patterns)
 
 if __name__ == '__main__':
