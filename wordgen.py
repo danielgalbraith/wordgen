@@ -6,6 +6,8 @@ import os
 import argparse
 import json
 
+from utils.lex_remove import LexRemover
+
 
 def read_from_csv(datafile):
 	df = pd.read_csv(datafile)
@@ -229,6 +231,14 @@ def sample_run(vowel_df, cons_df, sylnum, outputlines, sample_n):
 	return sample(full_wordlist, outputlines)
 
 
+def remove_from_lex(sylnum, lex_filepath):
+	remover = LexRemover(sylnum, lex_filepath)
+	remover.populate_wordset()
+	remover.populate_found()
+	remover.write_new_list()
+	remover.post_process()
+
+
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-csv", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="example.csv")
@@ -237,6 +247,7 @@ def main():
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
 	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="patterns.json")
 	parser.add_argument("-samp", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
+	parser.add_argument("-rm", "--remove", help="Option to remove words from the output according to a provided wordlist.", action='store_true', default=False)
 	args = parser.parse_args()
 	
 	datafile = args.csvfile
@@ -245,6 +256,7 @@ def main():
 	outputlines = args.outputlines
 	patterns = args.patterns
 	sampling = args.sampling
+	remove = args.remove
 	if mode == "rules":
 		vowel_df, cons_df = read_from_csv(datafile)
 		if sampling:
@@ -255,6 +267,10 @@ def main():
 			wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
 			write_file(wordlist)
 		post_process(sylnum, patterns)
+	if remove:
+		lex_filepath = input("Enter filepath for lexicon: ")
+		remove_from_lex(sylnum, lex_filepath)
+		
 
 if __name__ == '__main__':
 	main()
