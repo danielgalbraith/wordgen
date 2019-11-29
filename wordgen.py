@@ -219,6 +219,16 @@ def sample(wordlist, outputlines):
 	return np.random.choice(wordlist, outputlines, replace=False)
 
 
+def sample_run(vowel_df, cons_df, sylnum, outputlines, sample_n):
+	full_wordlist = []
+	for i in range(0, sample_n):
+		print('Sample %d' % (i+1))
+		part_wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
+		full_wordlist.append(part_wordlist)
+	full_wordlist = [item for part in full_wordlist for item in part]
+	return sample(full_wordlist, outputlines)
+
+
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-csv", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="example.csv")
@@ -226,25 +236,24 @@ def main():
 	parser.add_argument("-s", "--sylnum", help="Number of syllables in generated words.", default=2)
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
 	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="patterns.json")
+	parser.add_argument("-samp", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
 	args = parser.parse_args()
-
-	sample_n = 10
 	
 	datafile = args.csvfile
 	mode = args.mode
 	sylnum = args.sylnum
 	outputlines = args.outputlines
 	patterns = args.patterns
+	sampling = args.sampling
 	if mode == "rules":
 		vowel_df, cons_df = read_from_csv(datafile)
-		full_wordlist = []
-		for i in range(0, sample_n):
-			print('Sample %d' % (i+1))
-			part_wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
-			full_wordlist.append(part_wordlist)
-		full_wordlist = [item for part in full_wordlist for item in part]
-		sampled_wordlist = sample(full_wordlist, outputlines)
-		write_file(sampled_wordlist)
+		if sampling:
+			sample_n = int(input("Enter number of samples: (default=10)") or 10)
+			sampled_wordlist = sample_run(vowel_df, cons_df, sylnum, outputlines, sample_n)
+			write_file(sampled_wordlist)
+		else:
+			wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
+			write_file(wordlist)
 		post_process(sylnum, patterns)
 
 if __name__ == '__main__':
