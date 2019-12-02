@@ -40,15 +40,6 @@ class LexRemover:
 			os.remove("output.txt")
 
 
-	def main():
-		populate_wordset()
-		populate_found()
-		write_new_list()
-		post_process()
-
-	if __name__ == '__main__':
-		main()
-
 	def __init__(self, sylnum, lex_filepath):
 		self.sylnum = 2
 		self.lex_filepath = 'lexicon.txt'
