@@ -3,3 +3,4 @@ wordlist*
 orig-*
 lexicon.txt
 data.csv
+__pycache__*
