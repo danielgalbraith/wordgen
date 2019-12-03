@@ -3,10 +3,12 @@ import pandas as pd
 import random
 import re
 import os
+import sys
 import argparse
 import json
+import subprocess
 
-from utils.lex_remove import LexRemover
+from wg_utils.lex_remove import LexRemover
 
 
 def read_from_csv(datafile):
@@ -241,11 +243,11 @@ def remove_from_lex(sylnum, lex_filepath):
 
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-csv", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="example.csv")
+	parser.add_argument("-csv", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="data/example.csv")
 	parser.add_argument("-m", "--mode", help="Choose between deterministic rules or character-level LM (LSTM) modes.", default="rules")
 	parser.add_argument("-s", "--sylnum", help="Number of syllables in generated words.", default=2)
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
-	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="patterns.json")
+	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="data/patterns.json")
 	parser.add_argument("-samp", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
 	parser.add_argument("-rm", "--remove", help="Option to remove words from the output according to a provided wordlist.", action='store_true', default=False)
 	args = parser.parse_args()
@@ -267,6 +269,9 @@ def main():
 			wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
 			write_file(wordlist)
 		post_process(sylnum, patterns)
+	elif mode == "lstm":
+		subprocess.call(['./lstm_train.sh'])
+		subprocess.call(['./lstm_sample.sh'])
 	if remove:
 		lex_filepath = input("Enter filepath for lexicon: ")
 		remove_from_lex(sylnum, lex_filepath)
