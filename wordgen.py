@@ -3,10 +3,12 @@ import pandas as pd
 import random
 import re
 import os
+import sys
 import argparse
 import json
+import subprocess
 
-from utils.lex_remove import LexRemover
+from wg_utils.lex_remove import LexRemover
 
 
 def read_from_csv(datafile):
@@ -267,6 +269,9 @@ def main():
 			wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
 			write_file(wordlist)
 		post_process(sylnum, patterns)
+	elif mode == "lstm":
+		subprocess.call(['./lstm_train.sh'])
+		subprocess.call(['./lstm_sample.sh'])
 	if remove:
 		lex_filepath = input("Enter filepath for lexicon: ")
 		remove_from_lex(sylnum, lex_filepath)

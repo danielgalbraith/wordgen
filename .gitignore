@@ -4,3 +4,6 @@ orig-*
 lexicon.txt
 data.csv
 __pycache__*
+data/input.txt
+data.npy
+vocab.pkl
