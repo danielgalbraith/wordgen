@@ -89,6 +89,10 @@ def generate_onset(oldsyl, cons_df):
 
 def generate_coda(oldsyl, cons_df, syl_idx, sylnum):
 	coda = ['' if c == '_' else c for c in list(cons_df.index)]
+	# Monosyllabic word:
+	if sylnum == 1:
+		codaweights = get_weights(cons_df, "coda,monosyllable")
+		return random(coda, codaweights)
 	# Before penultimate syllable: #
 	if syl_idx < sylnum-2:
 		if len(oldsyl) > 2:
@@ -243,26 +247,26 @@ def remove_from_lex(sylnum, lex_filepath):
 
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-csv", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="data/example.csv")
+	parser.add_argument("-c", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="data/example.csv")
 	parser.add_argument("-m", "--mode", help="Choose between deterministic rules or character-level LM (LSTM) modes.", default="rules")
-	parser.add_argument("-s", "--sylnum", help="Number of syllables in generated words.", default=2)
+	parser.add_argument("-n", "--sylnum", help="Number of syllables in generated words.", default=2)
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
 	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="data/patterns.json")
-	parser.add_argument("-samp", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
-	parser.add_argument("-rm", "--remove", help="Option to remove words from the output according to a provided wordlist.", action='store_true', default=False)
+	parser.add_argument("-s", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
+	parser.add_argument("-r", "--remove", help="Option to remove words from the output according to a provided wordlist.", action='store_true', default=False)
 	args = parser.parse_args()
 	
 	datafile = args.csvfile
 	mode = args.mode
-	sylnum = args.sylnum
-	outputlines = args.outputlines
+	sylnum = int(args.sylnum)
+	outputlines = int(args.outputlines)
 	patterns = args.patterns
 	sampling = args.sampling
 	remove = args.remove
 	if mode == "rules":
 		vowel_df, cons_df = read_from_csv(datafile)
 		if sampling:
-			sample_n = int(input("Enter number of samples: (default=10)") or 10)
+			sample_n = int(input("Enter number of samples: (default=10) ") or 10)
 			sampled_wordlist = sample_run(vowel_df, cons_df, sylnum, outputlines, sample_n)
 			write_file(sampled_wordlist)
 		else:
