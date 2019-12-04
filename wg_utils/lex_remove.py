@@ -41,7 +41,7 @@ class LexRemover:
 
 
 	def __init__(self, sylnum, lex_filepath):
-		self.sylnum = 2
-		self.lex_filepath = 'lexicon.txt'
+		self.sylnum = sylnum
+		self.lex_filepath = lex_filepath
 		self.wordset = set()
 		self.found = set()

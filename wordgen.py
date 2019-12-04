@@ -189,7 +189,10 @@ def generate_words(vowel_df, cons_df, sylnum, outputlines):
 			onsc1 = generate_onset(oldsyl, cons_df)
 			coda = generate_coda(oldsyl, cons_df, j, sylnum)
 			# Write to output file: ##
-			syl += onsc1[0] + nuc[0] + coda[0] + '.'
+			if sylnum == 1:
+				syl += onsc1[0] + nuc[0] + coda[0]
+			else:
+				syl += onsc1[0] + nuc[0] + coda[0] + '.'
 			oldsyl = syl
 			word += syl
 		wordlist.append(word)
