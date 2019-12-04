@@ -1,7 +1,7 @@
 output*
 wordlist-*
 orig-*
-lexicon.txt
+lex.txt
 data.csv
 __pycache__*
 data/input.txt

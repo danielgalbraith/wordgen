@@ -1,0 +1,13 @@
+ana=dog
+kara=cat
+lima=girl
+aqa=boy
+wana=tree
+nihi=find
+duma=want
+mata=have
+-ko=2.pl.subj
+-mala=3.sg.obj
+sike(n)=always
+(o)mul=with
+mehe=tomorrow

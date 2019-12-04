@@ -67,19 +67,19 @@ def generate_onset(oldsyl, cons_df):
 		elif oldsyl[0] == 'k' or oldsyl[0] == 'g':
 			onsc1weights = get_weights(cons_df, "onsc1,prec velar ons")
 			return random(onsc1, onsc1weights)
-		elif oldsyl[0] == 'm' or oldsyl[0] == 'n':
+		elif oldsyl[0] == 'm' or oldsyl[0] == 'n' or oldsyl[0] == 'ɲ':
 			onsc1weights = get_weights(cons_df, "onsc1,prec nasal ons")
 			return random(onsc1, onsc1weights)
 		elif oldsyl[0] == 'l' or oldsyl[0] == 'r':
 			onsc1weights = get_weights(cons_df, "onsc1,prec liquid ons")
 			return random(onsc1, onsc1weights)
-		elif oldsyl[0] == 'z' or oldsyl[0] == 'x' or oldsyl[0] == 'c':
+		elif oldsyl[0] == 'z' or oldsyl[0] == 'ʃ' or oldsyl[0] == 'ʧ':
 			onsc1weights = get_weights(cons_df, "onsc1,prec sibilant ons")
 			return random(onsc1, onsc1weights)
-		elif oldsyl[0] == 'h' or oldsyl[0] == 'q':
+		elif oldsyl[0] == 'h' or oldsyl[0] == 'ʔ':
 			onsc1weights = get_weights(cons_df, "onsc1,prec glottal ons")
 			return random(onsc1, onsc1weights)
-		elif oldsyl[0] == 'w' or oldsyl[0] == 'y':
+		elif oldsyl[0] == 'w' or oldsyl[0] == 'j':
 			onsc1weights = get_weights(cons_df, "onsc1,prec semivowel ons")
 			return random(onsc1, onsc1weights)
 		else:
@@ -96,7 +96,7 @@ def generate_coda(oldsyl, cons_df, syl_idx, sylnum):
 	# Before penultimate syllable: #
 	if syl_idx < sylnum-2:
 		if len(oldsyl) > 2:
-			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
+			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ŋ':
 				codaweights = get_weights(cons_df, "coda,before penult prec nasal coda")
 				return random(coda, codaweights)
 			elif oldsyl[2] == 'p':
@@ -123,7 +123,7 @@ def generate_coda(oldsyl, cons_df, syl_idx, sylnum):
 	# Penultimate syllable: #
 	if syl_idx == sylnum-2:
 		if len(oldsyl) > 2:
-			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
+			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ŋ':
 				codaweights = get_weights(cons_df, "coda,penult prec nasal coda")
 				return random(coda, codaweights)
 			elif oldsyl[2] == 'p':
@@ -150,7 +150,7 @@ def generate_coda(oldsyl, cons_df, syl_idx, sylnum):
 	# Final syllable: #
 	if syl_idx == sylnum-1:
 		if len(oldsyl) > 2:
-			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ng':
+			if oldsyl[2] == 'm' or oldsyl[2] == 'n' or oldsyl[2] == 'ŋ':
 				codaweights = get_weights(cons_df, "coda,last syl prec nasal coda")
 				return random(coda, codaweights)
 			elif oldsyl[2] == 'p':
@@ -199,21 +199,21 @@ def generate_words(vowel_df, cons_df, sylnum, outputlines):
 	return wordlist
 
 
-def write_file(wordlist):
+def write_file(wordlist, outfile):
 	# Writes a wordlist output file: #
-	with open("output.txt", "w") as f:
+	with open(outfile, "w") as f:
 		for i in range (0, len(wordlist)):
 			f.write(wordlist[i] + '\n')
 
 
-def post_process(sylnum, patterns):
+def post_process(patterns, infile, outfile):
 	# Load patterns from file:
 	with open(patterns, "r") as patf:
 		pats = json.load(patf)
 	# Post-process output: #
-	with open("output.txt", "r") as f1:
+	with open(infile, "r") as f1:
 		seen = set()
-		with open("wordlist-%dsyl.txt" % sylnum, "w") as f2:
+		with open(outfile, "w") as f2:
 			for line in f1:
 				if line not in seen:
 					seen.add(line)
@@ -221,9 +221,18 @@ def post_process(sylnum, patterns):
 						sub = re.sub(re.compile(k), v, line)
 						line = sub
 					f2.write(line)
+
+
+def clean_up():
 	# Trash intermediate output:
 	if os.path.exists("output.txt"):
 		os.remove("output.txt")
+
+
+def clean_up_ascii(wordlist_fname):
+	# Replace ASCII output with wordlist filename:
+	os.remove(wordlist_fname)
+	os.rename("ascii_output.txt", wordlist_fname)
 
 
 def sample(wordlist, outputlines):
@@ -257,6 +266,7 @@ def main():
 	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="data/patterns.json")
 	parser.add_argument("-s", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
 	parser.add_argument("-r", "--remove", help="Option to remove words from the output according to a provided wordlist.", action='store_true', default=False)
+	parser.add_argument("-a", "--ascii_only", help="Option to convert IPA to ASCII-only representation.", action='store_true', default=False)
 	args = parser.parse_args()
 	
 	datafile = args.csvfile
@@ -266,21 +276,28 @@ def main():
 	patterns = args.patterns
 	sampling = args.sampling
 	remove = args.remove
+	ascii_only = args.ascii_only
+
 	if mode == "rules":
 		vowel_df, cons_df = read_from_csv(datafile)
 		if sampling:
 			sample_n = int(input("Enter number of samples: (default=10) ") or 10)
 			sampled_wordlist = sample_run(vowel_df, cons_df, sylnum, outputlines, sample_n)
-			write_file(sampled_wordlist)
+			write_file(sampled_wordlist, "output.txt")
 		else:
 			wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
-			write_file(wordlist)
-		post_process(sylnum, patterns)
+			write_file(wordlist, "output.txt")
+		post_process(patterns, "output.txt", "wordlist-%dsyl.txt" % sylnum)
+		clean_up()
+		if ascii_only:
+			ascii_map = input("Enter filepath for ASCII map: (default=data/ascii_map.json) ") or "data/ascii_map.json"
+			post_process(ascii_map, "wordlist-%dsyl.txt" % sylnum, "ascii_output.txt")
+			clean_up_ascii("wordlist-%dsyl.txt" % sylnum)
 	elif mode == "lstm":
 		subprocess.call(['./lstm_train.sh'])
 		subprocess.call(['./lstm_sample.sh'])
 	if remove:
-		lex_filepath = input("Enter filepath for lexicon: ")
+		lex_filepath = input("Enter filepath for lexicon: (default=data/lexicon.txt) ") or "data/lexicon.txt"
 		remove_from_lex(sylnum, lex_filepath)
 		
 
