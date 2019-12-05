@@ -56,7 +56,7 @@ The logic for the rule-based mode is hard-coded in `wordgen.py`. The phoneme wei
 | "onsc1,rule 2" | 1.0 | 1.0 | 1.0 | 1.0 | ... |
 | "coda,rule 1" | 1.0 | 1.0 | 1.0 | 1.0 | ... |
 
-The `read_from_csv` function can be altered to accommodate different formats. It is assumed that the vowel rule will be 'all', i.e. for all nuclei, but `wordgen.py` can be changed to permit consonantal nuclei. Rule names should be in quotation marks and formatted as "[segment],[context]". The hard-coded logic in `wordgen.py` must be changed if different syllable structures are desired, e.g. additional onset or coda consonants.
+The `read_from_csv` function can be altered to accommodate different formats. Consonantal rule names should be in quotation marks and formatted as "[segment],[context]"; the vowel rule in the example applies to all nuclei. The hard-coded logic in `wordgen.py` must be changed if different syllable structures are desired, such as additional onset or coda consonants, vowel length rules, diphthongs, tones etc.
 
 ### Options
 
