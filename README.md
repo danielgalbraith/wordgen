@@ -27,7 +27,8 @@ The submodule `char_rnn` includes [Sherjil Ozair](https://github.com/sherjilozai
 # Installation
 For easiest setup, create a Python environment using [Miniconda](https://docs.conda.io/en/latest/miniconda.html). After installing conda, run the following to set up your environment:
 
-```conda create -n wordgen python=3.7
+```
+conda create -n wordgen python=3.7
 conda activate wordgen
 pip install -r requirements.txt
 ```
