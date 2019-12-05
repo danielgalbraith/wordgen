@@ -1,5 +1,5 @@
 # WordGen
-A script written in Python 3.7 for generating random words based on a predefined phonology. Both deterministic rule-based and character model (LSTM) modes available.
+A program written in Python 3.7 for generating random words based on a predefined phonology. Both deterministic rule-based and character model (LSTM) modes available.
 
 ## Features
 
@@ -29,7 +29,8 @@ For easiest setup, create a Python environment using [Miniconda](https://docs.co
 
 ```conda create -n wordgen python=3.7
 conda activate wordgen
-pip install -r requirements.txt```
+pip install -r requirements.txt
+```
 
 This will install all necessary Python dependencies and ensure you are using the correct versions.
 
