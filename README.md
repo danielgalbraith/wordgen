@@ -35,3 +35,30 @@ pip install -r requirements.txt
 
 This will install all necessary Python dependencies and ensure you are using the correct versions.
 
+# Usage
+
+## Rule-based
+
+The script should be called from root directory as follows:
+
+```
+python wordgen.py [options]
+```
+
+The logic for the rule-based mode is hard-coded in `wordgen.py`. The phoneme weights are read from a CSV-formatted file, for example the provided `data/example.csv`. The `read_from_csv` function in `wordgen.py` assumes the following structure, where the contexts are represented by rules in the leftmost column and weights for each rule in the respective phoneme columns.
+
+| Rules | | | | | | 
+| --- | --- | --- | --- | --- | --- | 
+| V | a | e | i | o | ... |
+| all | 1.0 | 1.0 | 1.0 | 1.0 | ... |
+| C | _ | m | n | p | ... |
+| onset rule 1 | 1.0 | 1.0 | 1.0 | 1.0 | ... |
+| onset rule 2 | 1.0 | 1.0 | 1.0 | 1.0 | ... |
+| coda rule | 1.0 | 1.0 | 1.0 | 1.0 | ... |
+
+The `read_from_csv` function can be altered to accommodate different formats. It is assumed that the vowel rule will be 'all', i.e. for all nuclei, but `wordgen.py` can be changed to permit consonantal nuclei. The hard-coded logic in `wordgen.py` must be changed if different syllable structures are desired, e.g. additional onset or coda consonants.
+
+### Options
+
+...
+
