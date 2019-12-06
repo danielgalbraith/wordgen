@@ -7,7 +7,7 @@ RNN_SIZE=128
 N_LAYERS=2
 SEQ_LENGTH=10
 N_EPOCHS=50
-LR=0.0001
+LR=0.002
 MDY=$(date +"%m-%d-%y")
 OUT_DIR=output/$MDY-h$RNN_SIZE-l$N_LAYERS-seq$SEQ_LENGTH-e$N_EPOCHS
 SAVE_DIR=$OUT_DIR/checkpoints
@@ -44,5 +44,9 @@ python3 char_rnn/sample.py --save_dir=$SAVE_DIR \
 sort $OUT_DIR/sample.txt | uniq -u > $OUT_DIR/temp_sample.txt
 shuf $OUT_DIR/temp_sample.txt > $OUT_DIR/sample.txt
 rm $OUT_DIR/temp_sample.txt
+
+# Move these files back into DATA_DIR if model is to be reused:
+mv data/data.npy $OUT_DIR/data.npy
+mv data/vocab.pkl $OUT_DIR/vocab.pkl
 
 echo "Finished sampling!"

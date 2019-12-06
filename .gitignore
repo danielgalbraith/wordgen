@@ -1,10 +1,10 @@
+input*
 output*
 wordlist-*
 orig-*
 lex.txt
 data.csv
-__pycache__*
-input_alphabetic.txt
 data.npy
 vocab.pkl
+__pycache__*
 all.txt
