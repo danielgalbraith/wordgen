@@ -294,8 +294,7 @@ def main():
 			post_process(ascii_map, "wordlist-%dsyl.txt" % sylnum, "ascii_output.txt")
 			clean_up_ascii("wordlist-%dsyl.txt" % sylnum)
 	elif mode == "lstm":
-		subprocess.call(['./lstm_train.sh'])
-		subprocess.call(['./lstm_sample.sh'])
+		subprocess.call(['./lstm_run.sh'])
 	if remove:
 		lex_filepath = input("Enter filepath for lexicon: (default=data/lexicon.txt) ") or "data/lexicon.txt"
 		remove_from_lex(sylnum, lex_filepath)

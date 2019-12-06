@@ -4,6 +4,7 @@ orig-*
 lex.txt
 data.csv
 __pycache__*
-data/input.txt
+input_alphabetic.txt
 data.npy
 vocab.pkl
+all.txt
