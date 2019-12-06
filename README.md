@@ -45,7 +45,7 @@ The script should be called from root directory as follows:
 python wordgen.py [options]
 ```
 
-The logic for the rule-based mode is hard-coded in `wordgen.py`. The phoneme weights are read from a CSV-formatted file, for example the provided `data/example.csv`. The `read_from_csv` function in `wordgen.py` assumes the following structure, where the phonotactic contexts are represented by rules in the leftmost column and weights for each rule in the respective phoneme columns.
+Rules mode is run by default. The logic for the rule-based mode is hard-coded in `wordgen.py`. The phoneme weights are read from a CSV-formatted file, for example the provided `data/example.csv`. The `read_from_csv` function in `wordgen.py` assumes the following structure, where the phonotactic contexts are represented by rules in the leftmost column and weights for each rule in the respective phoneme columns.
 
 | Rules | | | | | | 
 | --- | --- | --- | --- | --- | --- | 
@@ -56,9 +56,27 @@ The logic for the rule-based mode is hard-coded in `wordgen.py`. The phoneme wei
 | "onsc1,rule 2" | 1.0 | 1.0 | 1.0 | 1.0 | ... |
 | "coda,rule 1" | 1.0 | 1.0 | 1.0 | 1.0 | ... |
 
-The `read_from_csv` function can be altered to accommodate different formats. Consonantal rule names should be in quotation marks and formatted as "[segment],[context]"; the vowel rule in the example applies to all nuclei. The hard-coded logic in `wordgen.py` must be changed if different syllable structures are desired, such as additional onset or coda consonants, vowel length rules, diphthongs, tones etc.
+Consonantal rule names should be in quotation marks and formatted as "[segment],[context]"; the vowel rule in the example applies to all nuclei. The hard-coded logic in `wordgen.py` must be changed if different syllable structures are desired, such as additional onset or coda consonants, vowel length rules, diphthongs, tones etc.
 
 ### Options
 
-...
+#### Custom phoneme weights
+
+A custom input CSV file with different rules and weights can be provided by the `-c` flag; the default path is `data/example.csv`.
+
+```
+python wordgen.py -c path/to/mycsv
+```
+
+If you want to use a different input format, edit the `read_from_csv` function in `wordgen.py`.
+
+#### Number of syllables and output words
+
+By default, a random number of syllables is chosen for each output word (option `-n 0`), but a specific number can be specified using the `-n` flag. The default number of output words is 3000, but a different number can be specified using the `-o` flag.
+
+```
+python wordgen.py -n 2 -o 1000
+```
+
+## Character-level language model
 

@@ -45,7 +45,7 @@ sort $OUT_DIR/sample.txt | uniq -u > $OUT_DIR/temp_sample.txt
 shuf $OUT_DIR/temp_sample.txt > $OUT_DIR/sample.txt
 rm $OUT_DIR/temp_sample.txt
 
-# Move these files back into DATA_DIR if model is to be reused:
+# These files can be moved back into DATA_DIR if needed:
 mv data/data.npy $OUT_DIR/data.npy
 mv data/vocab.pkl $OUT_DIR/vocab.pkl
 
