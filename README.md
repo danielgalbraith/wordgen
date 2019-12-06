@@ -65,7 +65,7 @@ Consonantal rule names should be in quotation marks and formatted as "[segment],
 A custom input CSV file with different rules and weights can be provided by the `-c` flag; the default path is `data/example.csv`.
 
 ```
-python wordgen.py -c path/to/mycsv
+python wordgen.py -c path/to/myweights.csv
 ```
 
 If you want to use a different input format, edit the `read_from_csv` function in `wordgen.py`.
@@ -78,5 +78,29 @@ By default, a random number of syllables is chosen for each output word (option 
 python wordgen.py -n 2 -o 1000
 ```
 
+#### Custom post-processing rules
+
+The `-p` flag specifies a json file of patterns for replacement in the output text file, which can be used to apply assimilation rules. The default path to the patterns file is the provided `data/patterns.json`.
+
+```
+python wordgen.py -p path/to/mypatterns.json
+```
+
+The format of the patterns file is assumed to be json, with the structure { "[regex]": "[string replacement]" }. The regular expression on the left for each rule should be formatted as a raw string input for the Python 3+ `re.compile()` function.
+
+#### Sampling
+
+...
+
+#### Removal of specific lexemes
+
+...
+
+#### Convert IPA to ASCII-only representation
+
+...
+
 ## Character-level language model
+
+...
 
