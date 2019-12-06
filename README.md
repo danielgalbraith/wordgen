@@ -56,7 +56,7 @@ Rules mode is run by default. The logic for the rule-based mode is hard-coded in
 | "onsc1,rule 2" | 1.0 | 1.0 | 1.0 | 1.0 | ... |
 | "coda,rule 1" | 1.0 | 1.0 | 1.0 | 1.0 | ... |
 
-Consonantal rule names should be in quotation marks and formatted as "[segment],[context]"; the vowel rule in the example applies to all nuclei. The hard-coded logic in `wordgen.py` must be changed if different syllable structures are desired, such as additional onset or coda consonants, vowel length rules, diphthongs, tones etc.
+Consonantal rule names should be in quotation marks and formatted as "[SEGMENT],[CONTEXT]"; the vowel rule in the example applies to all nuclei. The hard-coded logic in `wordgen.py` must be changed if different syllable structures are desired, such as additional onset or coda consonants, vowel length rules, diphthongs, tones etc.
 
 ### Options
 
@@ -80,13 +80,7 @@ python wordgen.py -n 2 -o 1000
 
 #### Custom post-processing rules
 
-The `-p` flag specifies a json file of patterns for replacement in the output text file, which can be used to apply assimilation rules. The default path to the patterns file is the provided `data/patterns.json`.
-
-```
-python wordgen.py -p path/to/mypatterns.json
-```
-
-The format of the patterns file is assumed to be json, with the structure { "[regex]": "[string replacement]" }. The regular expression on the left for each rule should be formatted as a raw string input for the Python 3+ `re.compile()` function.
+The `-p` flag specifies a json file of replacement rules, applied before the final output wordlist file is generated. The default path to the patterns file is `data/patterns.json`; the user will be prompted to input a different path if desired. The format of the patterns file is assumed to be json, with the structure { "[REGEX]": "[STRING REPLACEMENT]" }. The regular expression on the left for each rule should be formatted as a raw string input for the Python 3+ `re.compile()` function.
 
 #### Sampling
 

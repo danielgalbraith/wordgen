@@ -267,7 +267,7 @@ def main():
 	parser.add_argument("-m", "--mode", help="Choose between deterministic rules or character-level LM (LSTM) modes.", default="rules")
 	parser.add_argument("-n", "--sylnum", help="Number of syllables in generated words.", default=0)
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
-	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="data/patterns.json")
+	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", action='store_true', default=False)
 	parser.add_argument("-s", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
 	parser.add_argument("-r", "--remove", help="Option to remove words from the output according to a provided wordlist.", action='store_true', default=False)
 	parser.add_argument("-a", "--ascii_only", help="Option to convert IPA to ASCII-only representation.", action='store_true', default=False)
@@ -294,7 +294,11 @@ def main():
 		wl_fname = "wordlist-%dsyl.txt" % sylnum
 		if sylnum == 0:
 			wl_fname = "wordlist-randnsyl.txt"
-		post_process(patterns, "output.txt", wl_fname)
+		if patterns:
+			pats_file = input("Enter filepath for patterns: (default=data/patterns.json) ") or "data/patterns.json"
+			post_process(pats_file, "output.txt", wl_fname)
+		else:
+			os.rename("output.txt", wl_fname)
 		clean_up()
 		if ascii_only:
 			ascii_map = input("Enter filepath for ASCII map: (default=data/ascii_map.json) ") or "data/ascii_map.json"
