@@ -17,7 +17,7 @@ Wordgen has the following features by default:
 These default settings can be changed by altering the phoneme inventory and weights in the input CSV, or by changing the number of lines/syllables in the output.
 
 ### LSTM mode
-The submodule `char_rnn` includes [Sherjil Ozair](https://github.com/sherjilozair)'s character-level language model [char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow). The scripts `lstm_train.sh` and `lstm_sample.sh` can be edited as desired. Default input consists of a text file list of lexemes, e.g. the provided `data/wordlist_2.txt`.
+The submodule `char_rnn` includes [Sherjil Ozair](https://github.com/sherjilozair)'s character-level language model [char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow). The scripts `lstm_train.sh` and `lstm_sample.sh` can be edited as desired. Default input consists of a text file list of lexemes, e.g. the provided `data/input.txt`.
 
 ## Additional tools
 1. `lex_remove.py` removes a specific set of words from the generated wordlist; this functionality is included in `wordgen.py` with the `-r` flag.
@@ -82,19 +82,28 @@ python wordgen.py -n 2 -o 1000
 
 The `-p` flag specifies a json file of replacement rules, applied before the final output wordlist file is generated. The default path to the patterns file is `data/patterns.json`; the user will be prompted to input a different path if desired. The format of the patterns file is assumed to be json, with the structure { "[REGEX]": "[STRING REPLACEMENT]" }. The regular expression on the left for each rule should be formatted as a raw string input for the Python 3+ `re.compile()` function.
 
+By default, without the `-p` flag rules mode will permit duplicates, but with the `-p` flag the logic will remove duplicates due to adding to the set of 'seen' lexemes. This behaviour can be changed by editing the `post_process` function in `wordgen.py`.
+
 #### Sampling
 
-...
+The output wordlist can be sampled from several runs of WordGen with the `-s` flag. The user will be prompted for the number of sample runs, where the default is 10. (Sampling calls the entire rule-based flow each time, so it is not advised to use a high n).
 
 #### Removal of specific lexemes
 
-...
+The `-r` flag prompts the user to specify a lexicon text file, by default the provided `data/lexicon.txt`, to remove those lexemes from the output wordlist.
 
 #### Convert IPA to ASCII-only representation
 
-...
+The provided example CSV represents phonemes using IPA. The `-a` flag can be used to convert IPA to ASCII characters, following the rules in `data/ascii_map.json`. The logic is the same as that of the `-p` flag post-processing rules, where the user is prompted for the json rules file.
 
 ## Character-level language model
 
-...
+LSTM mode uses the `char_rnn` submodule by [Sherjil Ozair](https://github.com/sherjilozair), which requires Tensorflow <2.0, by default [v1.15.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.15.0) For further information about the RNN model structure, see e.g. [here](https://towardsdatascience.com/character-level-language-model-1439f5dd87fe). Run the following command to use the character model:
 
+```
+python wordgen.py -m lstm
+```
+
+WordGen will call the script `lstm_run.sh`, where the model parameters can be altered. The `char_rnn` code requires the input file to be named `input.txt`, but the path to the directory containing this file can be specified in `lstm_run.sh`. By default the model will be saved to `output` under the WordGen root directory.
+
+The script first trains the model for 50 epochs and then samples 30,000 characters by default, or approximately 3000 words using the provided English wordlist `data/input.txt`. The script also removes duplicates and moves generated data and vocab files into the output directory.
