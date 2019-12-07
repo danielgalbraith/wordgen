@@ -181,15 +181,19 @@ def generate_words(vowel_df, cons_df, sylnum, outputlines):
 	for i in range (0, outputlines):
 		word = ''
 		# Do this for each syllable: #
-		for j in range (0, sylnum):
+		if sylnum == 0:
+			temp_sylnum = np.random.randint(1, 6)
+		else:
+			temp_sylnum = sylnum
+		for j in range (0, temp_sylnum):
 			if j == 0:
 				oldsyl = ''
 			syl = ''
 			nuc = generate_nucleus(vowel_df)
 			onsc1 = generate_onset(oldsyl, cons_df)
-			coda = generate_coda(oldsyl, cons_df, j, sylnum)
+			coda = generate_coda(oldsyl, cons_df, j, temp_sylnum)
 			# Write to output file: ##
-			if sylnum == 1:
+			if temp_sylnum == 1:
 				syl += onsc1[0] + nuc[0] + coda[0]
 			else:
 				syl += onsc1[0] + nuc[0] + coda[0] + '.'
@@ -261,9 +265,9 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-c", "--csvfile", help="Input file with phoneme weights and phonotactic rules.", default="data/example.csv")
 	parser.add_argument("-m", "--mode", help="Choose between deterministic rules or character-level LM (LSTM) modes.", default="rules")
-	parser.add_argument("-n", "--sylnum", help="Number of syllables in generated words.", default=2)
+	parser.add_argument("-n", "--sylnum", help="Number of syllables in generated words.", default=0)
 	parser.add_argument("-o", "--outputlines", help="Number of output words generated.", default=3000)
-	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", default="data/patterns.json")
+	parser.add_argument("-p", "--patterns", help="Optional json file for post-processing rules.", action='store_true', default=False)
 	parser.add_argument("-s", "--sampling", help="Option to sample from n runs of WordGen (default n=10).", action='store_true', default=False)
 	parser.add_argument("-r", "--remove", help="Option to remove words from the output according to a provided wordlist.", action='store_true', default=False)
 	parser.add_argument("-a", "--ascii_only", help="Option to convert IPA to ASCII-only representation.", action='store_true', default=False)
@@ -287,15 +291,21 @@ def main():
 		else:
 			wordlist = generate_words(vowel_df, cons_df, sylnum, outputlines)
 			write_file(wordlist, "output.txt")
-		post_process(patterns, "output.txt", "wordlist-%dsyl.txt" % sylnum)
+		wl_fname = "wordlist-%dsyl.txt" % sylnum
+		if sylnum == 0:
+			wl_fname = "wordlist-randnsyl.txt"
+		if patterns:
+			pats_file = input("Enter filepath for patterns: (default=data/patterns.json) ") or "data/patterns.json"
+			post_process(pats_file, "output.txt", wl_fname)
+		else:
+			os.rename("output.txt", wl_fname)
 		clean_up()
 		if ascii_only:
 			ascii_map = input("Enter filepath for ASCII map: (default=data/ascii_map.json) ") or "data/ascii_map.json"
 			post_process(ascii_map, "wordlist-%dsyl.txt" % sylnum, "ascii_output.txt")
 			clean_up_ascii("wordlist-%dsyl.txt" % sylnum)
 	elif mode == "lstm":
-		subprocess.call(['./lstm_train.sh'])
-		subprocess.call(['./lstm_sample.sh'])
+		subprocess.call(['./lstm_run.sh'])
 	if remove:
 		lex_filepath = input("Enter filepath for lexicon: (default=data/lexicon.txt) ") or "data/lexicon.txt"
 		remove_from_lex(sylnum, lex_filepath)
