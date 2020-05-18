@@ -182,7 +182,8 @@ def generate_words(vowel_df, cons_df, sylnum, outputlines):
 		word = ''
 		# Do this for each syllable: #
 		if sylnum == 0:
-			temp_sylnum = np.random.randint(1, 6)
+			sylnum_weights = [5,10,7.5,4,1.5,0.1,0.01]
+			temp_sylnum = np.random.choice([1,2,3,4,5,6,7], p=[w/sum(sylnum_weights) for w in sylnum_weights])
 		else:
 			temp_sylnum = sylnum
 		for j in range (0, temp_sylnum):
@@ -302,8 +303,8 @@ def main():
 		clean_up()
 		if ascii_only:
 			ascii_map = input("Enter filepath for ASCII map: (default=data/ascii_map.json) ") or "data/ascii_map.json"
-			post_process(ascii_map, "wordlist-%dsyl.txt" % sylnum, "ascii_output.txt")
-			clean_up_ascii("wordlist-%dsyl.txt" % sylnum)
+			post_process(ascii_map, wl_fname, "ascii_output.txt")
+			clean_up_ascii(wl_fname)
 	elif mode == "lstm":
 		subprocess.call(['./lstm_run.sh'])
 	if remove:

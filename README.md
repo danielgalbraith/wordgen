@@ -72,7 +72,7 @@ If you want to use a different input format, edit the `read_from_csv` function i
 
 #### Number of syllables and output words
 
-By default, a random number of syllables is chosen for each output word (option `-n 0`), but a specific number can be specified using the `-n` flag. The default number of output words is 3000, but a different number can be specified using the `-o` flag.
+By default, a random number of syllables is chosen for each output word (option `-n 0`), weighted by the typical distribution of number of syllables across English words, but a specific number can be specified using the `-n` flag. The default number of output words is 3000, but a different number can be specified using the `-o` flag.
 
 ```
 python wordgen.py -n 2 -o 1000
